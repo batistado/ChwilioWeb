@@ -1,19 +1,21 @@
 <template>
   <div class="home">
-    <h1>Chwilio!</h1>
-    <el-input placeholder="Please input" v-model="searchText"></el-input>
-    <el-button icon="el-icon-search"></el-button>
+    <search-bar @search="onSearch"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import SearchBar from '@/components/SearchBar.vue'
 
 export default {
   name: 'home',
-  data() {
-    return {
-      searchText: '',
+  components: {
+    SearchBar,
+  },
+  methods: {
+    onSearch(searchText) {
+      this.$router.push({ name: 'searchResults', params: { query: searchText }});
     }
   }
 }

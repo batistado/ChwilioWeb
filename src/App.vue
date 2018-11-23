@@ -1,15 +1,11 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
+    <router-link :to="{name: 'home'}" id="home">Home</router-link>
+    <router-link :to="{name: 'about'}" id="about">About</router-link>
+    <div class="header">
+    <h1 class="center">Chwilio!</h1>
     </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view/>
   </div>
 </template>
 
@@ -24,13 +20,32 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+#home {
+  float: left;
+}
+
+#about {
+  float: right;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+}
+.center {
+  font-size: 5em;
+  margin-top: 10%;
+  margin-bottom: -5px;
+  width: 800px;
+}
+
 </style>
