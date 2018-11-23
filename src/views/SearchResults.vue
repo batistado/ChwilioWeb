@@ -1,6 +1,6 @@
 <template>
   <div class="search-results">
-    <search-bar @search="onSearch"/>
+    <search-bar @search="onSearch" :searchText.sync="searchText"/>
     Search Results:
     <el-card shadow="always" v-for="tweet in data" :key="tweet.id">
       ID: {{tweet.id}}
@@ -21,11 +21,12 @@ export default {
   data() {
       return {
           data: [],
+          searchText: '',
       };
   },
   methods: {
-    loadData(searchQuery) {
-      this.$axios.get('tweets/all?query='+searchQuery)
+    loadData() {
+      this.$axios.get('tweets/all?query='+this.searchText)
       .then((response) => {
         this.data = response.data;
       })
@@ -33,11 +34,13 @@ export default {
     },
 
     onSearch(searchText) {
-      this.loadData(searchText);
+      this.searchText = searchText
+      this.loadData();
     }
   },
   created() {
-    this.loadData(this.$route.params.query);
+    this.searchText = this.$route.params.query;
+    this.loadData();
   }
 }
 </script>

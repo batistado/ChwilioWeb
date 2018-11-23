@@ -1,7 +1,7 @@
 <template>
   <div class="search-bar">
     <div class="input">
-    <el-input placeholder="Start searching..." v-model="searchText"></el-input>
+    <el-input placeholder="Start searching..." :value="searchText" @input="$emit('update:searchText', $event)"></el-input>
     </div>
     <el-button icon="el-icon-search" @click="onSearch" size="mini"></el-button>
   </div>
@@ -12,10 +12,11 @@
 
 export default {
   name: 'searchBar',
-  data() {
-    return {
-      searchText: '',
-    }
+  props: {
+    searchText: {
+        type: String,
+        default: () => '',
+    },
   },
   methods: {
     onSearch() {
