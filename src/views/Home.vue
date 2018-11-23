@@ -1,18 +1,20 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Chwilio!</h1>
+    <el-input placeholder="Please input" v-model="searchText"></el-input>
+    <el-button icon="el-icon-search"></el-button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      searchText: '',
+    }
   }
 }
 </script>
