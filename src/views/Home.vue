@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <search-bar @search="onSearch"/>
+    <search-bar @search="onSearch" :searchText.sync="searchText"/>
   </div>
 </template>
 
@@ -13,9 +13,16 @@ export default {
   components: {
     SearchBar,
   },
+  data() {
+      return {
+          data: [],
+          searchText: '',
+      };
+  },
   methods: {
     onSearch(searchText) {
-      this.$router.push({ name: 'searchResults', params: { query: searchText }});
+      this.searchText = searchText;
+      this.$router.push({ name: 'searchResults', params: { query: this.searchText }});
     }
   }
 }
