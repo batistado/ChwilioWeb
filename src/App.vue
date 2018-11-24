@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <router-link :to="{name: 'home'}" id="home">Home</router-link>
-    <router-link :to="{name: 'about'}" id="about">About</router-link>
-    <div class="header">
-    <h1 class="center">Chwilio!</h1>
-    </div>
+    <top-bar/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import TopBar from '@/components/TopBar.vue'
+
 export default {
   name: 'app',
+  components: {
+    TopBar,
+  },
 }
 </script>
 
@@ -23,24 +24,4 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
-#home {
-  float: left;
-}
-
-#about {
-  float: right;
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-}
-.center {
-  font-size: 5em;
-  margin-top: 10%;
-  margin-bottom: -5px;
-  width: 800px;
-}
-
 </style>

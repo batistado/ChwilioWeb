@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <search-bar @search="onSearch" :searchText.sync="searchText"/>
+  <div class="header">
+      <h1 class="center">Chwilio!</h1>
+      <search-bar @search="onSearch" :searchText.sync="searchText"/>
   </div>
 </template>
 
@@ -27,3 +28,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.center {
+  font-size: 5em;
+  text-align: center;
+  margin-top: 10%;
+  margin-bottom: -5px;
+}
+</style>
+
