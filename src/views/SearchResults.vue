@@ -8,10 +8,7 @@
     </div>
     <div class="search-results">
     Search Results:
-    <el-card shadow="always" v-for="tweet in data" :key="tweet.id">
-      ID: {{tweet.id}}
-      Text: {{tweet.text}}
-    </el-card>
+    <tweet-card v-for="tweet in data" :key="tweet.id" :tweetData="tweet"></tweet-card>
     </div>
   </div>
 </template>
@@ -20,12 +17,14 @@
 // @ is an alias to /src
 import SearchBar from '@/components/SearchBar.vue'
 import TopBar from '@/components/TopBar.vue'
+import TweetCard from '@/components/TweetCard.vue'
 
 export default {
   name: 'home',
   components: {
     SearchBar,
-    TopBar
+    TopBar,
+    TweetCard
   },
   data() {
       return {
@@ -35,7 +34,7 @@ export default {
   },
   methods: {
     loadData() {
-      this.$axios.get('tweets/all?query='+this.searchText)
+      this.$axios.get('tweets/all?query='+this.searchText+'&page=1')
       .then((response) => {
         this.data = response.data;
       })

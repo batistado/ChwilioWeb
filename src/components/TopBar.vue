@@ -14,6 +14,10 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+
 .nav-buttons {
   text-align: right;
 }
