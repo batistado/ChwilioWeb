@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="tweet-card">
     <el-card shadow="always">
       <div class="wrapper">
@@ -8,7 +9,8 @@
                 <b>{{tweetData.username}}</b>
               </div>
               <div class="options">
-                  {{tweetData.date}}
+                  {{this.transformedDate}}
+                  <el-button @click="dialogVisible = true" icon="el-icon-more" size="mini" round id="prev-button"></el-button>
               </div>
           </div>
           <hr/>
@@ -18,19 +20,41 @@
       </div>
     </el-card>
   </div>
+
+    <el-dialog
+    title="Tweet Details"
+    :visible.sync="dialogVisible">
+        <tweet-details :tweetData="tweetData"/>
+    </el-dialog>
+</div>
 </template>
 
 <script>
 // @ is an alias to /src
+import moment from "moment"
+import TweetDetails from "@/components/TweetDetails.vue"
 
 export default {
   name: 'tweet-card',
+  components: {
+      TweetDetails,
+  },
+  data() {
+      return {
+          dialogVisible: false,
+      }
+  },
   props: {
     tweetData: {
         type: Object,
         required: true,
     },
   },
+  computed: {
+      transformedDate() {
+          return moment(this.tweetData.date).format('DD/MM/YYYY');
+      }
+  }
 }
 </script>
 
@@ -41,6 +65,11 @@ export default {
 .header {
     display: flex;
     justify-content: space-between;
+}
+
+#prev-button {
+    margin-top: -10px;
+    margin-left: 5px;
 }
 
 b {

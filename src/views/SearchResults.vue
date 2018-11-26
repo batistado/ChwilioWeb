@@ -6,6 +6,12 @@
         <search-bar @search="onSearch" :searchText.sync="searchText"/>
       </div>
     </div>
+    <el-pagination
+    background
+    layout="prev, pager, next"
+    :total="totalTweets"
+    @current-change="changeCurrPage">
+    </el-pagination>
     <div class="search-results">
     Search Results:
     <tweet-card v-for="tweet in data" :key="tweet.id" :tweetData="tweet"></tweet-card>
@@ -30,13 +36,20 @@ export default {
       return {
           data: [],
           searchText: '',
+          currPage: 1,
+          totalTweets: 0,
       };
   },
   methods: {
+    changeCurrPage(newPage){
+      this.currPage = newPage;
+      this.loadData();
+    },
     loadData() {
-      this.$axios.get('tweets/all?query='+this.searchText+'&page=1')
+      this.$axios.get('tweets/all?query='+this.searchText+'&page=' + this.currPage)
       .then((response) => {
-        this.data = response.data;
+        this.data = response.data.tweets;
+        this.totalTweets = response.data.numberOfTweets;
       })
       .catch(error => console.log(error));
     },
