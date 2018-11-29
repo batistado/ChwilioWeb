@@ -2,25 +2,46 @@
     <div class="tweet-details">
         <div>
             <div>
-            <img :src="tweetData.userProfileImage" alt="Avatar" style="width:80px">
+            <img :src="tweetCopy.userProfileImage" alt="Avatar" style="width:80px">
             </div>
             <div>
-            <b>{{tweetData.username}}</b>
+            <b>{{tweetCopy.username}}</b>
             </div>
         </div>
         <div>
             <table>
                 <tr>
                     <td><b>Tweet:</b></td>
-                    <td>{{tweetData.text}}</td>
+                    <td>{{tweetCopy.text}}</td>
+                </tr>
+                <tr v-if="this.tweetData.lang !== this.selectedLang">
+                    <td colspan="2">
+                        <el-card shadow="always">
+                            <div>
+                                <b>Original Text:</b>
+                            </div>
+                            <div>
+                                {{this.tweetData.text}}
+                            </div>
+                        </el-card>
+                    </td>
                 </tr>
                 <tr>
                     <td><b>City:</b></td>
-                    <td>{{tweetData.city}}</td>
+                    <td>{{tweetCopy.city}}</td>
                 </tr>
                 <tr>
                     <td><b>Language:</b></td>
-                    <td>{{tweetData.lang}}</td>
+                    <td>
+                        <el-select :value="this.selectedLang" @change="onLangChange" size="mini">
+                            <el-option
+                            v-for="item in this.langs"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </td>
                 </tr>
                 <tr>
                     <td><b>Timestamp:</b></td>
@@ -28,11 +49,11 @@
                 </tr>
                 <tr>
                     <td><b>Topic:</b></td>
-                    <td>{{tweetData.topic}}</td>
+                    <td>{{tweetCopy.topic}}</td>
                 </tr>
                 <tr>
                     <td><b>Tweet URL:</b></td>
-                    <td>{{tweetData.tweetUrl}}</td>
+                    <td>{{tweetCopy.tweetUrl}}</td>
                 </tr>
             </table>
         </div>
@@ -51,11 +72,55 @@ export default {
         required: true,
     },
   },
+  data() {
+      return {
+          tweetCopy: {},
+          langs: [{
+              value: 'en',
+              label: 'English'
+          },
+          {
+              value: 'th',
+              label: 'Thai'
+          },
+          {
+              value: 'fr',
+              label: 'French'
+          },{
+              value: 'hi',
+              label: 'Hindi'
+          },
+          {
+              value: 'es',
+              label: 'Espaniol'
+          }],
+          selectedLang: '',
+      }
+  },
   computed: {
       transformedDate() {
-          return moment(this.tweetData.date).format('DD/MM/YYYY');
-      }
-  }
+          return moment(this.tweetCopy.date).format('DD/MM/YYYY');
+      },
+  },
+    methods: {
+        loadData() {
+            this.$axios.post('tweets/translate', this.tweetCopy)
+            .then((response) => {
+                this.$set(this.tweetCopy, 'originalText', response.data.text);
+                this.tweetCopy.text= response.data.translatedText;
+            })
+            .catch(error => console.log(error));
+        },
+        onLangChange(selectedLang) {
+            this.selectedLang = selectedLang;
+            this.$set(this.tweetCopy, 'lang', selectedLang);
+            this.loadData();
+        }
+    },
+    created() {
+        this.tweetCopy = Object.assign({}, this.tweetData);
+        this.selectedLang = this.tweetCopy.lang;
+    }
 }
 </script>
 

@@ -14,7 +14,7 @@
     </el-pagination>
     <div class="search-results">
     Search Results:
-    <tweet-card v-for="tweet in data" :key="tweet.id" :tweetData="tweet"></tweet-card>
+    <tweet-card v-for="tweet in data" :key="tweet.id" :id="tweet.id"></tweet-card>
     </div>
   </div>
 </template>

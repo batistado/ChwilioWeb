@@ -42,11 +42,12 @@ export default {
   data() {
       return {
           dialogVisible: false,
+          tweetData: {},
       }
   },
   props: {
-    tweetData: {
-        type: Object,
+    id: {
+        type: String,
         required: true,
     },
   },
@@ -54,6 +55,18 @@ export default {
       transformedDate() {
           return moment(this.tweetData.date).format('DD/MM/YYYY');
       }
+  },
+    methods: {
+        loadData() {
+      this.$axios.get('tweets/'+this.id)
+      .then((response) => {
+        this.tweetData = response.data;
+      })
+      .catch(error => console.log(error));
+    },
+    },
+  created() {
+    this.loadData();
   }
 }
 </script>
