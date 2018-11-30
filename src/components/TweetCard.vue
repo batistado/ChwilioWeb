@@ -1,6 +1,7 @@
 <template>
 <div>
-  <div class="tweet-card">
+  <div class="tweet-card" v-loading="loading" element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading">
     <el-card shadow="always">
       <div class="wrapper">
           <div class="header">
@@ -43,6 +44,7 @@ export default {
       return {
           dialogVisible: false,
           tweetData: {},
+          loading: true,
       }
   },
   props: {
@@ -58,11 +60,13 @@ export default {
   },
     methods: {
         loadData() {
+            this.loading = true;
       this.$axios.get('tweets/'+this.id)
       .then((response) => {
         this.tweetData = response.data;
       })
       .catch(error => console.log(error));
+      this.loading = false;
     },
     },
   created() {

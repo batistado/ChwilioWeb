@@ -9,7 +9,8 @@
             </div>
         </div>
         <div>
-            <table>
+            <table v-loading="loading" element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading">
                 <tr>
                     <td><b>Tweet:</b></td>
                     <td>{{tweetCopy.text}}</td>
@@ -75,6 +76,7 @@ export default {
   data() {
       return {
           tweetCopy: {},
+          loading: true,
           langs: [{
               value: 'en',
               label: 'English'
@@ -104,12 +106,14 @@ export default {
   },
     methods: {
         loadData() {
+            this.loading = true;
             this.$axios.post('tweets/translate', this.tweetCopy)
             .then((response) => {
                 this.$set(this.tweetCopy, 'originalText', response.data.text);
                 this.tweetCopy.text= response.data.translatedText;
             })
             .catch(error => console.log(error));
+            this.loading = false;
         },
         onLangChange(selectedLang) {
             this.selectedLang = selectedLang;
@@ -120,6 +124,7 @@ export default {
     created() {
         this.tweetCopy = Object.assign({}, this.tweetData);
         this.selectedLang = this.tweetCopy.lang;
+        this.loading = false;
     }
 }
 </script>
