@@ -13,7 +13,12 @@
       <div class="search-results" v-loading="loading" element-loading-text="Loading..."
     element-loading-spinner="el-icon-loading">
         Search Results:
-        <tweet-card v-for="tweet in data" :key="tweet.id" :tweetData="tweet"></tweet-card>
+        <template v-if="data.length > 0"> 
+          <tweet-card v-for="tweet in data" :key="tweet.id" :tweetData="tweet"></tweet-card>
+        </template>
+        <el-card shadow="always" v-else>
+          No results found :|
+        </el-card>
       </div>
     </div>
     <el-pagination
