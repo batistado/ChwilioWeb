@@ -2,10 +2,10 @@
     <div class="tweet-details">
         <div>
             <div>
-            <img :src="tweetCopy.userProfileImage" alt="Avatar" style="width:80px">
+            <img :src="tweetData.userProfileImage" alt="Avatar" style="width:80px">
             </div>
             <div>
-            <b>{{tweetCopy.username}}</b>
+            <b>{{tweetData.username}}</b>
             </div>
         </div>
         <div>
@@ -13,23 +13,23 @@
     element-loading-spinner="el-icon-loading">
                 <tr>
                     <td><b>Tweet:</b></td>
-                    <td>{{tweetCopy.text}}</td>
+                    <td>{{tweetData.text}}</td>
                 </tr>
-                <tr v-if="this.tweetData.lang !== this.selectedLang">
+                <tr v-if="this.tweetData.lang !== this.originalLang">
                     <td colspan="2">
                         <el-card shadow="always">
                             <div>
                                 <b>Original Text:</b>
                             </div>
                             <div>
-                                {{this.tweetData.text}}
+                                {{this.originalText}}
                             </div>
                         </el-card>
                     </td>
                 </tr>
                 <tr>
                     <td><b>City:</b></td>
-                    <td>{{tweetCopy.city}}</td>
+                    <td>{{tweetData.city}}</td>
                 </tr>
                 <tr>
                     <td><b>Language:</b></td>
@@ -50,11 +50,11 @@
                 </tr>
                 <tr>
                     <td><b>Topic:</b></td>
-                    <td>{{tweetCopy.topic}}</td>
+                    <td>{{tweetData.topic}}</td>
                 </tr>
                 <tr>
                     <td><b>Tweet URL:</b></td>
-                    <td>{{tweetCopy.tweetUrl}}</td>
+                    <td>{{tweetData.tweetUrl}}</td>
                 </tr>
             </table>
         </div>
@@ -68,14 +68,15 @@ import moment from "moment"
 export default {
   name: 'tweet-details',
   props: {
-    tweetData: {
-        type: Object,
+    id: {
+        type: String,
         required: true,
     },
   },
   data() {
       return {
-          tweetCopy: {},
+          tweetData: {},
+          tweetData: {},
           loading: true,
           langs: [{
               value: 'en',
@@ -97,34 +98,45 @@ export default {
               label: 'Espaniol'
           }],
           selectedLang: '',
+          originalLang: '',
+          originalText: '',
       }
   },
   computed: {
       transformedDate() {
-          return moment(this.tweetCopy.date).format('DD/MM/YYYY');
+          return moment(this.tweetData.date).format('DD/MM/YYYY');
       },
   },
     methods: {
-        loadData() {
+        translateData() {
             this.loading = true;
-            this.$axios.post('tweets/translate', this.tweetCopy)
+            this.$axios.post('tweets/translate', this.tweetData)
             .then((response) => {
-                this.$set(this.tweetCopy, 'originalText', response.data.text);
-                this.tweetCopy.text= response.data.translatedText;
+                this.tweetData.text= response.data.translatedText;
             })
             .catch(error => console.log(error));
             this.loading = false;
         },
         onLangChange(selectedLang) {
             this.selectedLang = selectedLang;
-            this.$set(this.tweetCopy, 'lang', selectedLang);
-            this.loadData();
-        }
+            this.tweetData.lang = selectedLang;
+            this.translateData();
+        },
+        loadData() {
+            this.loading = true;
+            this.$axios.get('tweets/'+this.id)
+            .then((response) => {
+                this.tweetData = response.data;
+                this.originalLang = this.originalLang.length === 0 ? this.tweetData.lang : this.originalLang;
+                this.selectedLang = this.selectedLang.length === 0 ? this.tweetData.lang : this.selectedLang;
+                this.originalText = this.originalText.length === 0 ? this.tweetData.text : this.originalText;
+            })
+            .catch(error => console.log(error));
+            this.loading = false;
+        },
     },
     created() {
-        this.tweetCopy = Object.assign({}, this.tweetData);
-        this.selectedLang = this.tweetCopy.lang;
-        this.loading = false;
+        this.loadData();
     }
 }
 </script>

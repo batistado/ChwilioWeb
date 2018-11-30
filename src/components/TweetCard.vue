@@ -1,7 +1,6 @@
 <template>
 <div>
-  <div class="tweet-card" v-loading="loading" element-loading-text="Loading..."
-    element-loading-spinner="el-icon-loading">
+  <div class="tweet-card">
     <el-card shadow="always">
       <div class="wrapper">
           <div class="header">
@@ -25,7 +24,7 @@
     <el-dialog
     title="Tweet Details"
     :visible.sync="dialogVisible">
-        <tweet-details :tweetData="tweetData"/>
+        <tweet-details :id="tweetData.id"/>
     </el-dialog>
 </div>
 </template>
@@ -43,13 +42,11 @@ export default {
   data() {
       return {
           dialogVisible: false,
-          tweetData: {},
-          loading: true,
       }
   },
   props: {
-    id: {
-        type: String,
+    tweetData: {
+        type: Object,
         required: true,
     },
   },
@@ -58,20 +55,6 @@ export default {
           return moment(this.tweetData.date).format('DD/MM/YYYY');
       }
   },
-    methods: {
-        loadData() {
-            this.loading = true;
-      this.$axios.get('tweets/'+this.id)
-      .then((response) => {
-        this.tweetData = response.data;
-      })
-      .catch(error => console.log(error));
-      this.loading = false;
-    },
-    },
-  created() {
-    this.loadData();
-  }
 }
 </script>
 
