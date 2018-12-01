@@ -10,7 +10,7 @@
               </div>
               <div class="options">
                   {{this.transformedDate}}
-                  <el-button @click="dialogVisible = true" icon="el-icon-more" size="mini" round id="prev-button"></el-button>
+                  <el-button @click="dialogVisible = true" size="mini" round id="prev-button"><font-awesome-icon icon="info-circle" :style="{ color: '#3F9EFF'}"/></el-button>
               </div>
           </div>
           <hr/>

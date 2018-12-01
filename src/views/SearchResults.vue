@@ -20,6 +20,9 @@
           No results found :|
         </el-card>
       </div>
+      <div class="trending-hashtags">
+        <trending-hashtags :filters="this.filters" @hashtagSelected="hashtagSelected"/>
+      </div>
     </div>
     <el-pagination
       background
@@ -37,6 +40,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import TopBar from '@/components/TopBar.vue'
 import TweetCard from '@/components/TweetCard.vue'
 import SearchFilter from '@/components/SearchFilter.vue'
+import TrendingHashtags from '@/components/TrendingHashtags.vue'
 
 export default {
   name: 'home',
@@ -44,7 +48,8 @@ export default {
     SearchBar,
     TopBar,
     TweetCard,
-    SearchFilter
+    SearchFilter,
+    TrendingHashtags
   },
   data() {
       return {
@@ -63,6 +68,10 @@ export default {
   methods: {
     langChanged(newLangs){
       this.filters.langs = newLangs;
+      this.loadData();
+    },
+    hashtagSelected(selectedHashtag) {
+      this.searchText = selectedHashtag;
       this.loadData();
     },
     daysChanged(newDays){
@@ -125,7 +134,11 @@ export default {
   width: 200px;
 }
 
+.trending-hashtags {
+  margin-top: 12px;
+}
+
 .search-results {
-  width: 1000px;
+  width: 800px;
 }
 </style>
