@@ -130,9 +130,9 @@ export default {
                 this.originalLang = this.originalLang.length === 0 ? this.tweetData.lang : this.originalLang;
                 this.selectedLang = this.selectedLang.length === 0 ? this.tweetData.lang : this.selectedLang;
                 this.originalText = this.originalText.length === 0 ? this.tweetData.text : this.originalText;
+                this.loading = false;
             })
-            .catch(error => console.log(error));
-            this.loading = false;
+            .catch(error => { console.log(error); this.loading = false; });
         },
     },
     created() {

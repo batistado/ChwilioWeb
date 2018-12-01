@@ -1,5 +1,6 @@
 <template>
-<div class="trending-hashtags">
+<div class="trending-hashtags" v-loading="loading" element-loading-text="Loading..."
+    element-loading-spinner="el-icon-loading">
     <el-card shadow="always">
         <div><b><font-awesome-icon icon="fire" :style="{ color: 'red', margin: '2px' }"/>Trending hashtags</b></div>
         <div class="trending-list">
@@ -44,9 +45,9 @@ export default {
         this.$axios.post('tweets/trending', this.filters)
         .then((response) => {
             this.data = response.data.trendingHashtags;
+            this.loading = false;
         })
-        .catch(error => console.log(error));
-        this.loading = false;
+        .catch(error => { console.log(error); this.loading=false;} );
     },
     onClick(event){
         this.$emit('hashtagSelected', event.target.textContent);

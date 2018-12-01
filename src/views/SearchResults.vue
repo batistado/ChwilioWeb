@@ -92,9 +92,9 @@ export default {
       .then((response) => {
         this.data = response.data.tweets;
         this.totalTweets = response.data.numberOfTweets;
+        this.loading = false;
       })
-      .catch(error => console.log(error));
-      this.loading = false;
+      .catch(error => { console.log(error); this.loading = false; });
     },
 
     onSearch(searchText) {
