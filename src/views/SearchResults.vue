@@ -8,7 +8,7 @@
     </div>
     <div class="search-wrapper">
       <div class="search-filters">
-        <search-filter @langChanged="langChanged" :filters="this.filters" @cityChanged="cityChanged" />
+        <search-filter @langChanged="langChanged" :filters="this.filters" @cityChanged="cityChanged" @daysChanged="daysChanged"/>
       </div>
       <div class="search-results" v-loading="loading" element-loading-text="Loading..."
     element-loading-spinner="el-icon-loading">
@@ -55,13 +55,18 @@ export default {
           totalTweets: 0,
           filters: {
             langs: ["en", "es", "hi", "fr", "th"],
-            cities: ["nyc", "delhi", "mexico city", "bangkok", "paris"]
+            cities: ["nyc", "delhi", "mexico city", "bangkok", "paris"],
+            date: ["100"],
           }
       };
   },
   methods: {
     langChanged(newLangs){
       this.filters.langs = newLangs;
+      this.loadData();
+    },
+    daysChanged(newDays){
+      this.filters.date = [newDays];
       this.loadData();
     },
     cityChanged(newCities){

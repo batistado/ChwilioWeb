@@ -29,6 +29,19 @@
                 </div>
             </el-card>
         </el-collapse-item>
+        <el-collapse-item title="Filter by history" name="3">
+            <el-card shadow="always">
+                <div><div class="history-label"><b>History (in days):</b></div>
+                    <el-slider
+                        v-model="prevDays"
+                        :min="15"
+                        vertical
+                        @change="daysChanged"
+                        height="300px">
+                    </el-slider>
+                </div>
+            </el-card>
+        </el-collapse-item>
     </el-collapse>
 </div>
 </template>
@@ -84,6 +97,7 @@ export default {
           }],
           selectedLangs: [],
           selectedCities: [],
+          prevDays: 0,
       }
   },
   methods: {
@@ -92,11 +106,15 @@ export default {
       },
       cityChanged(){
           this.$emit('cityChanged', this.selectedCities);
+      },
+      daysChanged() {
+          this.$emit('daysChanged', this.prevDays.toString());
       }
   },
   created(){
       this.selectedLangs = this.filters.langs;
       this.selectedCities = this.filters.cities;
+      this.prevDays = Number(this.filters.date[0]);
   }
 }
 </script>
@@ -105,5 +123,9 @@ export default {
 .search-filter {
     text-align: left;
     margin-top: 25px;
+}
+
+.history-label {
+    margin-bottom: 15px;
 }
 </style>
