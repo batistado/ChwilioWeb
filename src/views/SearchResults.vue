@@ -6,7 +6,9 @@
         <search-bar @search="onSearch" :searchText.sync="searchText"/>
       </div>
     </div>
-    <div class="search-wrapper">
+  <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="Search Results" name="Search Results">
+      <div class="search-wrapper">
       <div class="search-filters">
         <search-filter @langChanged="langChanged" :filters="this.filters" @cityChanged="cityChanged" @daysChanged="daysChanged"/>
       </div>
@@ -30,6 +32,12 @@
       :total="totalTweets"
       @current-change="changeCurrPage">
     </el-pagination>
+    </el-tab-pane>
+    <el-tab-pane label="Analytics" name="Analytics">
+      <analytics/>
+    </el-tab-pane>
+  </el-tabs>
+    
   </div>
 </template>
 
@@ -41,6 +49,7 @@ import TopBar from '@/components/TopBar.vue'
 import TweetCard from '@/components/TweetCard.vue'
 import SearchFilter from '@/components/SearchFilter.vue'
 import TrendingHashtags from '@/components/TrendingHashtags.vue'
+import Analytics from '@/components/Analytics.vue'
 
 export default {
   name: 'home',
@@ -49,10 +58,12 @@ export default {
     TopBar,
     TweetCard,
     SearchFilter,
-    TrendingHashtags
+    TrendingHashtags,
+    Analytics
   },
   data() {
       return {
+          activeName: 'Search Results',
           data: [],
           loading: false,
           searchText: '',
@@ -62,7 +73,8 @@ export default {
             langs: ["en", "es", "hi", "fr", "th"],
             cities: ["nyc", "delhi", "mexico city", "bangkok", "paris"],
             date: ["100"],
-          }
+          },
+          tokens: {},
       };
   },
   methods: {
@@ -92,6 +104,7 @@ export default {
       .then((response) => {
         this.data = response.data.tweets;
         this.totalTweets = response.data.numberOfTweets;
+        this.tokens = response.data.tokens;
         this.loading = false;
       })
       .catch(error => { console.log(error); this.loading = false; });
