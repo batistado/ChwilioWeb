@@ -18,7 +18,7 @@
         <pie-chart :data="sentimentData" title="Sentiment Analysis"></pie-chart>
     </el-card>
     <el-card shadow="always">
-        <line-chart :data="timeSeriesData" title="Time Series"></line-chart>
+        <line-chart :data="timeSeriesData" title="Time Series" :max="600" height="700px"></line-chart>
     </el-card>
 </div>
 </template>

@@ -6,7 +6,7 @@
         <search-bar @search="onSearch" :searchText.sync="searchText"/>
       </div>
     </div>
-  <el-tabs v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName">
     <el-tab-pane label="Search Results" name="Search Results">
       <div class="search-wrapper">
       <div class="search-filters">
@@ -129,12 +129,11 @@ export default {
 }
 
 .header-text {
-  margin-top: -40px;
   margin-right: 10px;
 }
 
 .search-bar {
-  margin-top: -20px;
+  margin-top: 10px;
   max-height: 60px;
 }
 

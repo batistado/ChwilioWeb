@@ -32,8 +32,6 @@ export default {
                   'value': this.data[key],
               });
           });
-
-          console.log(data);
           return data;
       }
   },
