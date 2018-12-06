@@ -1,6 +1,8 @@
 <template>
   <div class="header">
-      <h1 class="center">Chwilio!</h1>
+      <div class="center">
+        <img :src="imgSrc"/>
+      </div>
       <search-bar @search="onSearch" :searchText.sync="searchText"/>
   </div>
 </template>
@@ -18,14 +20,18 @@ export default {
       return {
           data: [],
           searchText: '',
+          imgSrc: '',
       };
   },
   methods: {
     onSearch(searchText) {
       this.searchText = searchText;
       this.$router.push({ name: 'searchResults', params: { query: this.searchText }});
+    },
+  },
+  created(){
+      this.imgSrc = require('../assets/logo.png');
     }
-  }
 }
 </script>
 

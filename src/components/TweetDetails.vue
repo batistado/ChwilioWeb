@@ -2,7 +2,7 @@
     <div class="tweet-details">
         <div>
             <div>
-            <img :src="tweetData.userProfileImage" alt="Avatar" style="width:80px">
+            <img :src="imgSrc" @error="defaultPic" alt="Avatar" style="width:80px">
             </div>
             <div>
             <b>{{tweetData.username}}</b>
@@ -13,7 +13,7 @@
     element-loading-spinner="el-icon-loading">
                 <tr>
                     <td><b>Tweet:</b></td>
-                    <td>{{tweetData.text}}</td>
+                    <td>{{tweetData.text}} <a :href="tweetData.tweetUrl" target="_blank"><font-awesome-icon icon="link" :style="{ color: '#76B9FF', margin: '2px' }"/></a></td>
                 </tr>
                 <tr v-if="this.tweetData.lang !== this.originalLang">
                     <td colspan="2">
@@ -27,7 +27,7 @@
                         </el-card>
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="tweetData.city">
                     <td><b>City:</b></td>
                     <td>{{tweetData.city}}</td>
                 </tr>
@@ -48,13 +48,9 @@
                     <td><b>Timestamp:</b></td>
                     <td>{{transformedDate}}</td>
                 </tr>
-                <tr>
+                <tr v-if="tweetData.topic">
                     <td><b>Topic:</b></td>
                     <td>{{tweetData.topic}}</td>
-                </tr>
-                <tr>
-                    <td><b>Tweet URL:</b></td>
-                    <td>{{tweetData.tweetUrl}}</td>
                 </tr>
             </table>
         </div>
@@ -75,6 +71,7 @@ export default {
   },
   data() {
       return {
+          imgSrc: '',
           tweetData: {},
           tweetData: {},
           loading: true,
@@ -130,10 +127,15 @@ export default {
                 this.originalLang = this.originalLang.length === 0 ? this.tweetData.lang : this.originalLang;
                 this.selectedLang = this.selectedLang.length === 0 ? this.tweetData.lang : this.selectedLang;
                 this.originalText = this.originalText.length === 0 ? this.tweetData.text : this.originalText;
+                this.imgSrc = this.tweetData.userProfileImage;
                 this.loading = false;
             })
             .catch(error => { console.log(error); this.loading = false; });
         },
+    defaultPic() {
+        this.imgSrc = require('../assets/default.png');
+        console.log(this.imgSrc);
+    }
     },
     created() {
         this.loadData();

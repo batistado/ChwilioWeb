@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="nav-bar">
-      <h1 class="header-text">Chwilio!</h1>
+      <div class="header-text">
+        <img :src="imgSrc" height="70px"/>
+      </div>
       <div class="search-bar">
         <search-bar @search="onSearch" :searchText.sync="searchText"/>
       </div>
@@ -117,6 +119,7 @@ export default {
   },
   created() {
     this.searchText = this.$route.params.query;
+    this.imgSrc = require('../assets/logo.png');
     this.loadData();
   }
 }

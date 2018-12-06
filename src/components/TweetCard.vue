@@ -5,7 +5,7 @@
       <div class="wrapper">
           <div class="header">
               <div class="profile">
-                <img :src="tweetData.userProfileImage" alt="Avatar" style="width:50px">
+                <img :src="imgSrc" @error="defaultPic" alt="Avatar" style="width:50px">
                 <b>{{tweetData.username}}</b>
               </div>
               <div class="options">
@@ -42,6 +42,7 @@ export default {
   data() {
       return {
           dialogVisible: false,
+          imgSrc: '',
       }
   },
   props: {
@@ -53,8 +54,16 @@ export default {
   computed: {
       transformedDate() {
           return moment(this.tweetData.date).format('DD/MM/YYYY');
-      }
+      },
   },
+  methods: {
+    defaultPic() {
+        this.imgSrc = require('../assets/default.png');
+    }
+  },
+  created(){
+      this.imgSrc = this.tweetData.userProfileImage;
+  }
 }
 </script>
 
@@ -90,6 +99,8 @@ b {
 img {
     border-radius: 50%;
     margin-right: 5px;
+    height: 50px;
+    width: 50px;
 }
 
 .content {
